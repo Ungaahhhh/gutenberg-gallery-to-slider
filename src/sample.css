@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.sample {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow-x: auto;
+}
+
+.sample > li {
+	margin: 0;
+	padding: 0;
+}
+
+.sample > li img {
+	height: 300px;
+    display: block;
+	object-fit: cover;
+}

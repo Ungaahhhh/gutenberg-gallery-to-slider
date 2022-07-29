@@ -7,7 +7,7 @@ export class WpGallery {
 			this.storage.gallery = this.getSelector(this.storage.target, '.wp_gallery');
 			this.storage.gallery.classList.add(this.config.effect);
 			this.wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
-			this.storage.wpBlockImage = this.getSelectorAll(this.storage.gallery, '.wp-block-image');
+			this.storage.wpBlockImage = this.getSelectorAll(this.storage.gallery, 'li');
 			if (this.config.thumb === 'dot') {
 				const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
 				const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
@@ -79,6 +79,8 @@ export class WpGallery {
 					this.setInterval();
 				});
 			}
+		console.log(1);
+
 		}
 	}
 	config = {
@@ -111,7 +113,7 @@ export class WpGallery {
 		}
 		this.storage.temp = this.getTemp(document, 'wp_gallery_temp');
 		this.storage.target = this.config.target;
-		this.storage.block = this.getSelector(this.storage.target, '.wp-block-gallery');
+		this.storage.block = this.getSelector(this.storage.target, '#scroll');
 	};
 	getTemp = (parent, id) => {
 		return parent.getElementById(id).content.cloneNode(true);

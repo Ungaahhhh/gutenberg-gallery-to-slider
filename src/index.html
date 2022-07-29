@@ -3,10 +3,40 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
-		<script src="./gutenberg-gallery-to-slider.js" type="module"></script>
+		<link rel="stylesheet" href="./sample.css" />
 		<title>My First Parcel App</title>
 	</head>
-	<body>
-		<h1>Hello, World!</h1>
+	<body id="body">
+		<h1>gutenberg-gallery-to-slider</h1>
+		<h2>scroll</h2>
+		<ul id="scroll" class="sample"></ul>
 	</body>
+	<script src="./sample.ts" type="module"></script>
+	<template id="wp_gallery_temp">
+		<template id="wp_gallery_thumb_temp">
+			<ul class="wp_gallery_thumb"></ul>
+		</template>
+		<template id="wp_gallery_thumb_item_temp">
+			<li class="wp_gallery_thumb_item"></li>
+		</template>
+		<template id="wp_gallery_thumb_img_temp">
+			<img />
+		</template>
+		<template id="wp_gallery_control_temp">
+			<button type="button" class="control prev" tabindex="-1">
+				<svg xmlns="http://www.w3.org/2000/svg">
+					<g transform="translate(-945 -1222)">
+						<rect width="30" height="50" transform="translate(945 1222)" fill="#bcbcbc" />
+						<path d="M15,10,0,25,15,40l3.462-3.46L6.922,25l11.54-11.538Z" transform="translate(951 1221)" fill="#fff" />
+					</g>
+				</svg>
+			</button>
+			<button type="button" class="control next" tabindex="-1">
+				<svg xmlns="http://www.w3.org/2000/svg">
+					<rect width="30" height="50" fill="#bcbcbc" />
+					<path d="M3.462,10l15,15-15,15L0,36.54,11.54,25,0,13.462Z" transform="translate(5.538 -1)" fill="#fff" />
+				</svg>
+			</button>
+		</template>
+	</template>
 </html>
