@@ -13,9 +13,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 		target.innerHTML = HTML;
 	}
 	const wpGalleryConfig = {
-		origin: true,
 		interval: 4000,
-		target: document.getElementById('body'),
+		scope: '#scroll',
+		target: 'ul',
 	};
 	new WpGallery(wpGalleryConfig);
 });
