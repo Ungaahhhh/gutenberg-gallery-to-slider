@@ -142,6 +142,8 @@ export class WpGallery {
 		}
 		if (this.storage.current >= this.storage.wpBlockImage) {
 			this.storage.current = 0;
+		} else if (this.storage.current < 0) {
+			this.storage.current = this.storage.wpBlockImage - 1;
 		}
 		switch (this.config.effect) {
 			case 'fade':
