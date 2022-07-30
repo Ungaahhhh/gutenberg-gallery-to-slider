@@ -13,7 +13,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 		target.innerHTML = HTML;
 	}
 	const wpGalleryConfig = {
-		interval: 4000,
 		scope: '#scroll',
 		target: 'ul',
 	};

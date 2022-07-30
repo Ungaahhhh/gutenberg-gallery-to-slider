@@ -4,15 +4,16 @@ export class WpGallery {
 		if (this.storage.target) {
 			this.storage.target.outerHTML = `<div class="wp_gallery"><div class="wp_gallery_inner">${this.storage.target.outerHTML}</div></div>`;
 			this.init();
-			this.storage.gallery = this.getSelector(this.storage.scope, '.wp_gallery');
-			this.storage.gallery.classList.add(this.config.effect);
-			this.wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
-			this.storage.wpBlockImage = this.storage.target.childElementCount;
+			if (this.storage.scope) this.storage.gallery = this.getSelector(this.storage.scope, '.wp_gallery');
+			if (this.storage.gallery) this.storage.gallery.classList.add(this.config.effect);
+			if (this.storage.gallery) this.storage.wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
+			this.storage.target.classList.add('wp_target');
+			this.storage.itemCount = this.storage.target.childElementCount;
 			if (this.config.thumb === 'dot') {
 				const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
 				const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
 				if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
-				for (let i = 0; i < this.storage.wpBlockImage; i++) {
+				for (let i = 0; i < this.storage.itemCount; i++) {
 					const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
 					const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
 					wpGalleryThumb.appendChild(wpGalleryThumbItem);
@@ -20,19 +21,20 @@ export class WpGallery {
 						this.setIndex(i, 'order');
 					});
 				}
-				this.wpGalleryInner.appendChild(wpGalleryThumb);
+				if (this.storage.wpGalleryInner) this.storage.wpGalleryInner.appendChild(wpGalleryThumb);
 				this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
 			} else {
 				const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
 				const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
 				if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
-				for (let i = 0; i < this.storage.wpBlockImage; i++) {
+				for (let i = 0; i < this.storage.itemCount; i++) {
 					const image = this.storage.target.children[i];
+					image.classList.add('wp_target_item');
 					const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
 					const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
 					const wpGalleryThumbImgTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_img_temp');
-					const img = this.getSelector(wpGalleryThumbImgTemp, 'img');
-					img.src = this.getSelector(image, 'img').src;
+					const img = this.getSelector(wpGalleryThumbImgTemp, 'img') as HTMLImageElement;
+					img.src = (this.getSelector(image, 'img') as HTMLImageElement).src;
 					wpGalleryThumbItem.appendChild(img);
 					wpGalleryThumb.appendChild(wpGalleryThumbItem);
 					wpGalleryThumbItem.addEventListener('click', (e) => {
@@ -48,18 +50,18 @@ export class WpGallery {
 				next.addEventListener('click', (e) => {
 					this.setIndex(1);
 				});
-				this.storage.gallery.appendChild(wpGalleryThumb);
-				this.wpGalleryInner.appendChild(wpGalleryControlTemp);
+				if (this.storage.gallery) this.storage.gallery.appendChild(wpGalleryThumb);
+				if (this.storage.wpGalleryInner) this.storage.wpGalleryInner.appendChild(wpGalleryControlTemp);
 				this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
 			}
 			if (this.config.effect === 'fade') {
-				for (let i = 0; i < this.storage.wpBlockImage; i++) {
+				for (let i = 0; i < this.storage.itemCount; i++) {
 					const element = this.storage.target.children[i];
 					if (i === 0) {
 						element.classList.add('current');
 					}
 					element.addEventListener('animationend', (e) => {
-						const target = e.target;
+						const target = e.target as HTMLElement;
 						if (target.classList.contains('fadeOut')) target.classList.remove('fadeOut');
 						if (target.classList.contains('current')) target.classList.remove('current');
 						if (target.classList.contains('fadeIn')) {
@@ -72,37 +74,37 @@ export class WpGallery {
 			this.setIndex(0, 'order');
 			if (this.config.interval) {
 				this.setInterval();
-				this.storage.gallery.addEventListener('mouseenter', () => {
-					this.abortInterval();
-				});
-				this.storage.gallery.addEventListener('mouseleave', () => {
-					this.setInterval();
-				});
+				if (this.storage.gallery)
+					this.storage.gallery.addEventListener('mouseenter', () => {
+						this.abortInterval();
+					});
+				if (this.storage.gallery)
+					this.storage.gallery.addEventListener('mouseleave', () => {
+						this.setInterval();
+					});
 			}
 		}
 	}
-	config = {
-		effect: null,
-		interval: null,
-		scope: null,
-		target: null,
-		thumb: null,
+	config: config = {
+		effect: 'slider',
+		interval: 0,
+		scope: '',
+		target: '',
+		thumb: 'image',
 	};
-	storage = {
-		target: null,
+	storage: storage = {
 		current: 0,
-		currentNext: 1,
 		gallery: null,
-		interval: null,
+		interval: 0,
 		isEffectFirst: true,
+		itemCount: 0,
 		scope: null,
+		target: null,
 		temp: null,
 		thumbItem: null,
-		wpBlockImage: null,
 		wpGalleryInner: null,
-		wpGalleryThumbTemp: null,
 	};
-	init = (config) => {
+	init = (config?) => {
 		if (config) {
 			for (const key in config) {
 				if (Object.hasOwnProperty.call(config, key)) {
@@ -114,16 +116,16 @@ export class WpGallery {
 		this.storage.scope = this.getSelector(document, this.config.scope);
 		this.storage.target = this.getSelector(this.storage.scope, this.config.target);
 	};
-	getTemp = (parent, id) => {
-		return parent.getElementById(id).content.cloneNode(true);
+	getTemp = (parent: any, id: string): HTMLElement => {
+		return parent.getElementById(id).content.cloneNode(true) as HTMLElement;
 	};
-	getSelector = (parent, query) => {
+	getSelector = (parent: any, query: string): HTMLElement => {
 		return parent.querySelector(query);
 	};
-	getSelectorAll = (parent, query) => {
+	getSelectorAll = (parent: any, query: string): HTMLCollection => {
 		return parent.querySelectorAll(query);
 	};
-	setIndex = (num, mode) => {
+	setIndex = (num, mode?) => {
 		const last = this.storage.current;
 		if (mode) {
 			switch (mode) {
@@ -140,30 +142,36 @@ export class WpGallery {
 		} else {
 			this.storage.current += num;
 		}
-		if (this.storage.current >= this.storage.wpBlockImage) {
+		if (this.storage.current >= this.storage.itemCount) {
 			this.storage.current = 0;
 		} else if (this.storage.current < 0) {
-			this.storage.current = this.storage.wpBlockImage - 1;
+			this.storage.current = this.storage.itemCount - 1;
 		}
 		switch (this.config.effect) {
 			case 'fade':
 				if (!this.storage.isEffectFirst) {
-					this.storage.target.children(last).classList.remove('fadeIn');
-					this.storage.target.children(last).classList.add('fadeOut');
-					this.storage.target.children(this.storage.current).classList.remove('fadeOut');
-					this.storage.target.children(this.storage.current).classList.add('fadeIn');
+					if (this.storage.target) {
+						this.storage.target.children[last].classList.remove('fadeIn');
+						this.storage.target.children[last].classList.add('fadeOut');
+						this.storage.target.children[this.storage.current].classList.remove('fadeOut');
+						this.storage.target.children[this.storage.current].classList.add('fadeIn');
+					}
 				}
 				this.storage.isEffectFirst = false;
 				break;
 			default:
-				this.storage.target.scrollLeft = this.storage.target.offsetWidth * this.storage.current;
+				if (this.storage.target) this.storage.target.scrollLeft = this.storage.target.offsetWidth * this.storage.current;
 				break;
 		}
 		if (this.config.thumb) {
-			for (let i = 0; i < this.storage.thumbItem.length; i++) {
-				this.storage.thumbItem.item(i).classList.remove('active');
+			if (this.storage.thumbItem) {
+				for (let i = 0; i < this.storage.thumbItem.length; i++) {
+					const prev = this.storage.thumbItem.item(i);
+					if (prev) prev.classList.remove('active');
+				}
+				const next = this.storage.thumbItem.item(this.storage.current);
+				if (next) next.classList.add('active');
 			}
-			this.storage.thumbItem.item(this.storage.current).classList.add('active');
 		}
 	};
 	setInterval = () => {
@@ -175,3 +183,24 @@ export class WpGallery {
 		clearInterval(this.storage.interval);
 	};
 }
+
+type config = {
+	effect: 'fade' | 'slider';
+	interval: number;
+	scope: string;
+	target: string;
+	thumb: 'dot' | 'image';
+};
+
+type storage = {
+	current: number;
+	gallery: HTMLElement | null;
+	interval: number;
+	isEffectFirst: boolean;
+	itemCount: number;
+	scope: HTMLElement | null;
+	target: HTMLElement | null;
+	temp: HTMLElement | null;
+	thumbItem: HTMLCollection | null;
+	wpGalleryInner: HTMLElement | null;
+};
