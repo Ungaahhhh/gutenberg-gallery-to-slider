@@ -1,6 +1,8 @@
 import { WpGallery } from './gutenberg-gallery-to-slider';
 window.addEventListener('DOMContentLoaded', async () => {
-	const response = await fetch('https://pixabay.com/api/?key=28916998-477d57555c1b9cf691a3084d9&category=animals&per_page=8');
+	const response = await fetch(
+		'https://pixabay.com/api/?key=28916998-477d57555c1b9cf691a3084d9&category=animals&per_page=8'
+	);
 	const json = await response.json();
 	const sample = document.querySelectorAll<HTMLUListElement>('.sample');
 	for (let i = 0; i < sample.length; i++) {
@@ -13,6 +15,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		target.innerHTML = HTML;
 	}
 	const wpGalleryConfig = {
+		interval: 4000,
 		scope: '#scroll',
 		target: 'ul',
 	};
