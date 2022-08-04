@@ -3,61 +3,41 @@ export class WpGallery {
 		this.init(config);
 		if (this.storage.target && this.storage.target.length > 0) {
 			for (let i = 0; i < this.storage.target.length; i++) {
-				let target = this.storage.target.item(i);
-				if (target) {
-					target.outerHTML = `<div class="wp_gallery"><div class="wp_gallery_inner">${target.outerHTML}</div></div>`;
+				let targetItem = this.storage.target.item(i);
+				if (targetItem) {
+					targetItem.outerHTML = `<div class="wp_gallery"><div class="wp_gallery_inner">${targetItem.outerHTML}</div></div>`;
 					this.init();
-					target = this.storage.target.item(i);
-					if (target) {
-						if (this.storage.scope)
-							this.storage.gallery = this.getSelector(this.storage.scope, '.wp_gallery');
+					targetItem = this.storage.target.item(i);
+					if (targetItem) {
+						if (this.storage.scope) this.storage.gallery = this.getSelector(this.storage.scope, '.wp_gallery');
 						if (this.storage.gallery) this.storage.gallery.classList.add(this.config.effect);
-						if (this.storage.gallery)
-							this.storage.wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
-						target.classList.add('wp_target');
-						this.storage.itemCount = target.childElementCount;
+						const wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
+						targetItem.classList.add('wp_target');
+						this.storage.itemCount = targetItem.childElementCount;
 						if (this.config.thumb === 'dot') {
 							const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
 							const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
 							if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
-								const wpGalleryThumbItemTemp = this.getTemp(
-									this.storage.temp,
-									'wp_gallery_thumb_item_temp'
-								);
-								const wpGalleryThumbItem = this.getSelector(
-									wpGalleryThumbItemTemp,
-									'.wp_gallery_thumb_item'
-								);
+								const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
+								const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
 								wpGalleryThumb.appendChild(wpGalleryThumbItem);
 								wpGalleryThumbItem.addEventListener('click', (e) => {
 									this.setIndex(i, j, 'order');
 								});
 							}
-							if (this.storage.wpGalleryInner) this.storage.wpGalleryInner.appendChild(wpGalleryThumb);
-							this.storage.thumbItem = this.getSelectorAll(
-								this.storage.gallery,
-								'.wp_gallery_thumb_item'
-							);
+							wpGalleryInner.appendChild(wpGalleryThumb);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
 						} else {
 							const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
 							const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
 							if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
-								const image = target.children[j];
+								const image = targetItem.children[j];
 								image.classList.add('wp_target_item');
-								const wpGalleryThumbItemTemp = this.getTemp(
-									this.storage.temp,
-									'wp_gallery_thumb_item_temp'
-								);
-								const wpGalleryThumbItem = this.getSelector(
-									wpGalleryThumbItemTemp,
-									'.wp_gallery_thumb_item'
-								);
-								const wpGalleryThumbImgTemp = this.getTemp(
-									this.storage.temp,
-									'wp_gallery_thumb_img_temp'
-								);
+								const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
+								const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
+								const wpGalleryThumbImgTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_img_temp');
 								const img = this.getSelector(wpGalleryThumbImgTemp, 'img') as HTMLImageElement;
 								img.src = (this.getSelector(image, 'img') as HTMLImageElement).src;
 								wpGalleryThumbItem.appendChild(img);
@@ -72,22 +52,20 @@ export class WpGallery {
 							prev.dataset.targetIndex = String(i);
 							next.dataset.targetIndex = String(i);
 							prev.addEventListener('click', (e) => {
+								prev.classList.add('active');
 								this.setIndex(i, -1);
 							});
 							next.addEventListener('click', (e) => {
+								next.classList.add('active');
 								this.setIndex(i, 1);
 							});
 							if (this.storage.gallery) this.storage.gallery.appendChild(wpGalleryThumb);
-							if (this.storage.wpGalleryInner)
-								this.storage.wpGalleryInner.appendChild(wpGalleryControlTemp);
-							this.storage.thumbItem = this.getSelectorAll(
-								this.storage.gallery,
-								'.wp_gallery_thumb_item'
-							);
+							wpGalleryInner.appendChild(wpGalleryControlTemp);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
 						}
 						if (this.config.effect === 'fade') {
 							for (let j = 0; j < this.storage.itemCount; j++) {
-								const element = target.children[j];
+								const element = targetItem.children[j];
 								if (j === 0) {
 									element.classList.add('current');
 								}
@@ -99,6 +77,10 @@ export class WpGallery {
 										target.classList.remove('fadeIn');
 										target.classList.add('current');
 									}
+									const prev = this.getSelector(wpGalleryInner, '.prev');
+									const next = this.getSelector(wpGalleryInner, '.next');
+									prev.classList.remove('active');
+									next.classList.remove('active');
 								});
 							}
 						}
@@ -136,7 +118,6 @@ export class WpGallery {
 		target: null,
 		temp: null,
 		thumbItem: null,
-		wpGalleryInner: null,
 	};
 	init = (config?) => {
 		if (config) {
@@ -194,9 +175,7 @@ export class WpGallery {
 				this.storage.isEffectFirst = false;
 				break;
 			default:
-				if (this.storage.target)
-					this.storage.target[targetIndex].scrollLeft =
-						this.storage.target[targetIndex].offsetWidth * this.storage.current;
+				if (this.storage.target) this.storage.target[targetIndex].scrollLeft = this.storage.target[targetIndex].offsetWidth * this.storage.current;
 				break;
 		}
 		if (this.config.thumb) {
@@ -242,5 +221,4 @@ type storage = {
 	target: HTMLCollection | null;
 	temp: HTMLElement | null;
 	thumbItem: HTMLCollection | null;
-	wpGalleryInner: HTMLElement | null;
 };

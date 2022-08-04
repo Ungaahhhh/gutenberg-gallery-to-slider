@@ -107,12 +107,12 @@
 	background: #707070;
 }
 
-.wp_gallery.fade .wp-block-gallery {
+.wp_gallery.fade .wp_target {
 	overflow: hidden;
 	height: 100%;
 }
 
-.wp_gallery.fade .wp-block-gallery.has-nested-images .wp-block-image {
+.wp_gallery.fade .wp_target .wp_target_item {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -121,19 +121,19 @@
 	height: 100%;
 }
 
-.wp_gallery.fade .wp-block-gallery.has-nested-images .wp-block-image.current {
+.wp_gallery.fade .wp_target .wp_target_item.current {
 	position: relative;
 	opacity: 1;
 	z-index: 2;
 }
 
-.wp_gallery.fade .wp-block-image.fadeIn {
+.wp_gallery.fade .wp_target_item.fadeIn {
 	animation-duration: 800ms;
 	animation-name: fadeIn;
 	z-index: 1;
 }
 
-.wp_gallery.fade .wp-block-image.fadeOut {
+.wp_gallery.fade .wp_target_item.fadeOut {
 	z-index: 2;
 	animation-duration: 800ms;
 	animation-name: fadeOut;
@@ -141,18 +141,25 @@
 
 .wp_gallery .control {
 	position: absolute;
+	z-index: 10;
 	width: 30px;
 	height: 50px;
-	padding: 0;
+	padding: 5px;
 	border: none;
-	background: none;
+	background: #0008;
 	top: 50%;
 	transform: translateY(-50%);
+	box-sizing: border-box;
+}
+
+.wp_gallery .control:hover {
+	cursor: pointer;
 }
 
 .wp_gallery .control svg {
 	width: 100%;
 	height: 100%;
+	fill: #fff;
 }
 
 .wp_gallery .control.prev {
@@ -161,6 +168,10 @@
 
 .wp_gallery .control.next {
 	right: 0;
+}
+
+.wp_gallery .control.active {
+	pointer-events: none;
 }
 
 @keyframes fadeIn {

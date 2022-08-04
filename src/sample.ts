@@ -14,10 +14,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 		target.innerHTML = HTML;
 	}
-	const wpGalleryConfig = {
+	const scrollConfig = {
 		interval: 4000,
 		scope: '#scroll',
 		target: 'ul',
 	};
-	new WpGallery(wpGalleryConfig);
+	new WpGallery(scrollConfig);
+	const fadeConfig = {
+		scope: '#fade',
+		target: 'ul',
+		effect: 'fade',
+	};
+	new WpGallery(fadeConfig);
 });
