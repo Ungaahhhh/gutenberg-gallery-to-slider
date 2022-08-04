@@ -32,6 +32,7 @@
 	.GGToSlider_thumb {
 		position: relative;
 		display: flex;
+		justify-content: center;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -39,7 +40,13 @@
 		z-index: 10;
 		&.dot {
 			position: absolute;
-			bottom: 20px;
+			bottom: 5px;
+			.GGToSlider_thumb_item {
+				margin: 5px;
+			}
+		}
+		&.active {
+			pointer-events: none;
 		}
 	}
 	.GGToSlider_thumb_item {

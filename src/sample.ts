@@ -1,8 +1,6 @@
 import { GGToSlider } from './gutenberg-gallery-to-slider';
 window.addEventListener('DOMContentLoaded', async () => {
-	const response = await fetch(
-		'https://pixabay.com/api/?key=28916998-477d57555c1b9cf691a3084d9&category=animals&per_page=8'
-	);
+	const response = await fetch('https://pixabay.com/api/?key=28916998-477d57555c1b9cf691a3084d9&category=animals&per_page=8');
 	const json = await response.json();
 	const sample = document.querySelectorAll<HTMLUListElement>('.sample');
 	for (let i = 0; i < sample.length; i++) {
@@ -21,9 +19,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 	};
 	new GGToSlider(scrollConfig);
 	const fadeConfig = {
+		effect: 'fade',
+		interval: 4000,
 		scope: '#fade',
 		target: 'ul',
-		effect: 'fade',
+		thumb: 'dot',
 	};
 	new GGToSlider(fadeConfig);
 });

@@ -9,9 +9,9 @@ export class GGToSlider {
 					this.init();
 					targetItem = this.storage.target.item(i);
 					if (targetItem) {
-						if (this.storage.scope) this.storage.gallery = this.getSelector(this.storage.scope, '.GGToSlider');
-						if (this.storage.gallery) this.storage.gallery.classList.add(this.config.effect);
-						this.storage.inner[i] = this.getSelector(this.storage.gallery, '.GGToSlider_inner');
+						if (this.storage.scope) this.storage.gallery[i] = this.getSelector(this.storage.scope, '.GGToSlider');
+						this.storage.gallery[i].classList.add(this.config.effect);
+						const inner = this.getSelector(this.storage.gallery[i], '.GGToSlider_inner');
 						targetItem.classList.add('GGToSlider_target');
 						this.storage.itemCount = targetItem.childElementCount;
 						if (this.config.thumb === 'dot') {
@@ -19,15 +19,18 @@ export class GGToSlider {
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
 							if (this.config.thumb) ggToSliderThumb.classList.add(this.config.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
+								const image = targetItem.children[j];
+								image.classList.add('GGToSlider_target_item');
 								const ggToSliderThumbItemTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_item_temp');
 								const ggToSliderThumbItem = this.getSelector(ggToSliderThumbItemTemp, '.GGToSlider_thumb_item');
 								ggToSliderThumb.appendChild(ggToSliderThumbItem);
 								ggToSliderThumbItem.addEventListener('click', (e) => {
+									ggToSliderThumb.classList.add('active');
 									this.setIndex(i, j, 'order');
 								});
 							}
-							this.storage.inner[i].appendChild(ggToSliderThumb);
-							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.GGToSlider_thumb_item');
+							inner.appendChild(ggToSliderThumb);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
 						} else {
 							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
@@ -43,6 +46,7 @@ export class GGToSlider {
 								ggToSliderThumbItem.appendChild(img);
 								ggToSliderThumb.appendChild(ggToSliderThumbItem);
 								ggToSliderThumbItem.addEventListener('click', (e) => {
+									ggToSliderThumb.classList.add('active');
 									this.setIndex(i, j, 'order');
 								});
 							}
@@ -59,9 +63,9 @@ export class GGToSlider {
 								next.classList.add('active');
 								this.setIndex(i, 1);
 							});
-							if (this.storage.gallery) this.storage.gallery.appendChild(ggToSliderThumb);
-							this.storage.inner[i].appendChild(ggToSliderControlTemp);
-							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.GGToSlider_thumb_item');
+							this.storage.gallery[i].appendChild(ggToSliderThumb);
+							inner.appendChild(ggToSliderControlTemp);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
 						}
 						if (this.config.effect === 'fade') {
 							for (let j = 0; j < this.storage.itemCount; j++) {
@@ -77,24 +81,24 @@ export class GGToSlider {
 										target.classList.remove('fadeIn');
 										target.classList.add('current');
 									}
-									const prev = this.getSelector(this.storage.inner[i], '.prev');
-									const next = this.getSelector(this.storage.inner[i], '.next');
-									prev.classList.remove('active');
-									next.classList.remove('active');
+									const prev = this.getSelector(inner, '.prev');
+									const next = this.getSelector(inner, '.next');
+									if (prev) prev.classList.remove('active');
+									if (next) next.classList.remove('active');
+									const ggToSliderThumb = this.getSelector(inner, '.GGToSlider_thumb');
+									if (ggToSliderThumb) ggToSliderThumb.classList.remove('active');
 								});
 							}
 						}
 						this.setIndex(i, 0, 'order');
 						if (this.config.interval) {
 							this.setInterval();
-							if (this.storage.gallery)
-								this.storage.gallery.addEventListener('mouseenter', () => {
-									this.abortInterval();
-								});
-							if (this.storage.gallery)
-								this.storage.gallery.addEventListener('mouseleave', () => {
-									this.setInterval();
-								});
+							this.storage.gallery[i].addEventListener('mouseenter', () => {
+								this.abortInterval();
+							});
+							this.storage.gallery[i].addEventListener('mouseleave', () => {
+								this.setInterval();
+							});
 						}
 					}
 				}
@@ -110,8 +114,7 @@ export class GGToSlider {
 	};
 	storage: storage = {
 		current: 0,
-		gallery: null,
-		inner: [],
+		gallery: [],
 		interval: 0,
 		isEffectFirst: true,
 		itemCount: 0,
@@ -143,58 +146,64 @@ export class GGToSlider {
 	};
 	setIndex = (targetIndex: number, num: number, mode?: 'reverse' | 'order') => {
 		const last = this.storage.current;
-		if (mode) {
-			switch (mode) {
-				case 'reverse':
-					this.storage.current -= num;
-					break;
-				case 'order':
-					this.storage.current = num;
+		if (this.storage.target) {
+			const targetItem = this.storage.target[targetIndex] as HTMLElement;
+			const galleryItem = this.storage.gallery[targetIndex] as HTMLElement;
+			if (mode) {
+				switch (mode) {
+					case 'reverse':
+						this.storage.current -= num;
+						break;
+					case 'order':
+						this.storage.current = num;
+						break;
+					default:
+						this.storage.current += num;
+						break;
+				}
+			} else {
+				this.storage.current += num;
+			}
+			if (this.storage.current >= this.storage.itemCount) {
+				this.storage.current = 0;
+			} else if (this.storage.current < 0) {
+				this.storage.current = this.storage.itemCount - 1;
+			}
+			switch (this.config.effect) {
+				case 'fade':
+					if (!this.storage.isEffectFirst) {
+						if (this.storage.target) {
+							targetItem.children[last].classList.remove('fadeIn');
+							targetItem.children[last].classList.add('fadeOut');
+							targetItem.children[this.storage.current].classList.remove('fadeOut');
+							targetItem.children[this.storage.current].classList.add('fadeIn');
+						}
+					}
+					this.storage.isEffectFirst = false;
 					break;
 				default:
-					this.storage.current += num;
+					if (this.storage.target) {
+						targetItem.scrollLeft = targetItem.offsetWidth * this.storage.current;
+						setTimeout(() => {
+							const prev = this.getSelector(galleryItem, '.prev');
+							const next = this.getSelector(galleryItem, '.next');
+							if (prev) prev.classList.remove('active');
+							if (next) next.classList.remove('active');
+							const ggToSliderThumb = this.getSelector(galleryItem, '.GGToSlider_thumb');
+							if (ggToSliderThumb) ggToSliderThumb.classList.remove('active');
+						}, 400);
+					}
 					break;
 			}
-		} else {
-			this.storage.current += num;
-		}
-		if (this.storage.current >= this.storage.itemCount) {
-			this.storage.current = 0;
-		} else if (this.storage.current < 0) {
-			this.storage.current = this.storage.itemCount - 1;
-		}
-		switch (this.config.effect) {
-			case 'fade':
-				if (!this.storage.isEffectFirst) {
-					if (this.storage.target) {
-						this.storage.target[targetIndex].children[last].classList.remove('fadeIn');
-						this.storage.target[targetIndex].children[last].classList.add('fadeOut');
-						this.storage.target[targetIndex].children[this.storage.current].classList.remove('fadeOut');
-						this.storage.target[targetIndex].children[this.storage.current].classList.add('fadeIn');
+			if (this.config.thumb) {
+				if (this.storage.thumbItem) {
+					for (let i = 0; i < this.storage.thumbItem.length; i++) {
+						const prev = this.storage.thumbItem.item(i);
+						if (prev) prev.classList.remove('active');
 					}
+					const next = this.storage.thumbItem.item(this.storage.current);
+					if (next) next.classList.add('active');
 				}
-				this.storage.isEffectFirst = false;
-				break;
-			default:
-				if (this.storage.target) {
-					this.storage.target[targetIndex].scrollLeft = this.storage.target[targetIndex].offsetWidth * this.storage.current;
-					setTimeout(() => {
-						const prev = this.getSelector(this.storage.inner[targetIndex], '.prev');
-						const next = this.getSelector(this.storage.inner[targetIndex], '.next');
-						prev.classList.remove('active');
-						next.classList.remove('active');
-					}, 400);
-				}
-				break;
-		}
-		if (this.config.thumb) {
-			if (this.storage.thumbItem) {
-				for (let i = 0; i < this.storage.thumbItem.length; i++) {
-					const prev = this.storage.thumbItem.item(i);
-					if (prev) prev.classList.remove('active');
-				}
-				const next = this.storage.thumbItem.item(this.storage.current);
-				if (next) next.classList.add('active');
 			}
 		}
 	};
@@ -222,8 +231,7 @@ type config = {
 
 type storage = {
 	current: number;
-	gallery: HTMLElement | null;
-	inner: HTMLElement[];
+	gallery: HTMLElement[];
 	interval: number;
 	isEffectFirst: boolean;
 	itemCount: number;
