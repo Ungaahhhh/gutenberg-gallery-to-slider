@@ -1,54 +1,54 @@
-export class WpGallery {
+export class GGToSlider {
 	constructor(config) {
 		this.init(config);
 		if (this.storage.target && this.storage.target.length > 0) {
 			for (let i = 0; i < this.storage.target.length; i++) {
 				let targetItem = this.storage.target.item(i);
 				if (targetItem) {
-					targetItem.outerHTML = `<div class="wp_gallery"><div class="wp_gallery_inner">${targetItem.outerHTML}</div></div>`;
+					targetItem.outerHTML = `<div class="GGToSlider"><div class="GGToSlider_inner">${targetItem.outerHTML}</div></div>`;
 					this.init();
 					targetItem = this.storage.target.item(i);
 					if (targetItem) {
-						if (this.storage.scope) this.storage.gallery = this.getSelector(this.storage.scope, '.wp_gallery');
+						if (this.storage.scope) this.storage.gallery = this.getSelector(this.storage.scope, '.GGToSlider');
 						if (this.storage.gallery) this.storage.gallery.classList.add(this.config.effect);
-						const wpGalleryInner = this.getSelector(this.storage.gallery, '.wp_gallery_inner');
-						targetItem.classList.add('wp_target');
+						this.storage.inner[i] = this.getSelector(this.storage.gallery, '.GGToSlider_inner');
+						targetItem.classList.add('GGToSlider_target');
 						this.storage.itemCount = targetItem.childElementCount;
 						if (this.config.thumb === 'dot') {
-							const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
-							const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
-							if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
+							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
+							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
+							if (this.config.thumb) ggToSliderThumb.classList.add(this.config.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
-								const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
-								const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
-								wpGalleryThumb.appendChild(wpGalleryThumbItem);
-								wpGalleryThumbItem.addEventListener('click', (e) => {
+								const ggToSliderThumbItemTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_item_temp');
+								const ggToSliderThumbItem = this.getSelector(ggToSliderThumbItemTemp, '.GGToSlider_thumb_item');
+								ggToSliderThumb.appendChild(ggToSliderThumbItem);
+								ggToSliderThumbItem.addEventListener('click', (e) => {
 									this.setIndex(i, j, 'order');
 								});
 							}
-							wpGalleryInner.appendChild(wpGalleryThumb);
-							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
+							this.storage.inner[i].appendChild(ggToSliderThumb);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.GGToSlider_thumb_item');
 						} else {
-							const wpGalleryThumbTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_temp');
-							const wpGalleryThumb = this.getSelector(wpGalleryThumbTemp, '.wp_gallery_thumb');
-							if (this.config.thumb) wpGalleryThumb.classList.add(this.config.thumb);
+							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
+							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
+							if (this.config.thumb) ggToSliderThumb.classList.add(this.config.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
 								const image = targetItem.children[j];
-								image.classList.add('wp_target_item');
-								const wpGalleryThumbItemTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_item_temp');
-								const wpGalleryThumbItem = this.getSelector(wpGalleryThumbItemTemp, '.wp_gallery_thumb_item');
-								const wpGalleryThumbImgTemp = this.getTemp(this.storage.temp, 'wp_gallery_thumb_img_temp');
-								const img = this.getSelector(wpGalleryThumbImgTemp, 'img') as HTMLImageElement;
+								image.classList.add('GGToSlider_target_item');
+								const ggToSliderThumbItemTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_item_temp');
+								const ggToSliderThumbItem = this.getSelector(ggToSliderThumbItemTemp, '.GGToSlider_thumb_item');
+								const ggToSliderThumbImgTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_img_temp');
+								const img = this.getSelector(ggToSliderThumbImgTemp, 'img') as HTMLImageElement;
 								img.src = (this.getSelector(image, 'img') as HTMLImageElement).src;
-								wpGalleryThumbItem.appendChild(img);
-								wpGalleryThumb.appendChild(wpGalleryThumbItem);
-								wpGalleryThumbItem.addEventListener('click', (e) => {
+								ggToSliderThumbItem.appendChild(img);
+								ggToSliderThumb.appendChild(ggToSliderThumbItem);
+								ggToSliderThumbItem.addEventListener('click', (e) => {
 									this.setIndex(i, j, 'order');
 								});
 							}
-							const wpGalleryControlTemp = this.getTemp(this.storage.temp, 'wp_gallery_control_temp');
-							const prev = this.getSelector(wpGalleryControlTemp, '.prev');
-							const next = this.getSelector(wpGalleryControlTemp, '.next');
+							const ggToSliderControlTemp = this.getTemp(this.storage.temp, 'GGToSlider_control_temp');
+							const prev = this.getSelector(ggToSliderControlTemp, '.prev');
+							const next = this.getSelector(ggToSliderControlTemp, '.next');
 							prev.dataset.targetIndex = String(i);
 							next.dataset.targetIndex = String(i);
 							prev.addEventListener('click', (e) => {
@@ -59,9 +59,9 @@ export class WpGallery {
 								next.classList.add('active');
 								this.setIndex(i, 1);
 							});
-							if (this.storage.gallery) this.storage.gallery.appendChild(wpGalleryThumb);
-							wpGalleryInner.appendChild(wpGalleryControlTemp);
-							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.wp_gallery_thumb_item');
+							if (this.storage.gallery) this.storage.gallery.appendChild(ggToSliderThumb);
+							this.storage.inner[i].appendChild(ggToSliderControlTemp);
+							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery, '.GGToSlider_thumb_item');
 						}
 						if (this.config.effect === 'fade') {
 							for (let j = 0; j < this.storage.itemCount; j++) {
@@ -77,8 +77,8 @@ export class WpGallery {
 										target.classList.remove('fadeIn');
 										target.classList.add('current');
 									}
-									const prev = this.getSelector(wpGalleryInner, '.prev');
-									const next = this.getSelector(wpGalleryInner, '.next');
+									const prev = this.getSelector(this.storage.inner[i], '.prev');
+									const next = this.getSelector(this.storage.inner[i], '.next');
 									prev.classList.remove('active');
 									next.classList.remove('active');
 								});
@@ -111,6 +111,7 @@ export class WpGallery {
 	storage: storage = {
 		current: 0,
 		gallery: null,
+		inner: [],
 		interval: 0,
 		isEffectFirst: true,
 		itemCount: 0,
@@ -127,7 +128,7 @@ export class WpGallery {
 				}
 			}
 		}
-		this.storage.temp = this.getTemp(document, 'wp_gallery_temp');
+		this.storage.temp = this.getTemp(document, 'GGToSlider_temp');
 		this.storage.scope = this.getSelector(document, this.config.scope);
 		this.storage.target = this.getSelectorAll(this.storage.scope, this.config.target);
 	};
@@ -175,7 +176,15 @@ export class WpGallery {
 				this.storage.isEffectFirst = false;
 				break;
 			default:
-				if (this.storage.target) this.storage.target[targetIndex].scrollLeft = this.storage.target[targetIndex].offsetWidth * this.storage.current;
+				if (this.storage.target) {
+					this.storage.target[targetIndex].scrollLeft = this.storage.target[targetIndex].offsetWidth * this.storage.current;
+					setTimeout(() => {
+						const prev = this.getSelector(this.storage.inner[targetIndex], '.prev');
+						const next = this.getSelector(this.storage.inner[targetIndex], '.next');
+						prev.classList.remove('active');
+						next.classList.remove('active');
+					}, 400);
+				}
 				break;
 		}
 		if (this.config.thumb) {
@@ -214,6 +223,7 @@ type config = {
 type storage = {
 	current: number;
 	gallery: HTMLElement | null;
+	inner: HTMLElement[];
 	interval: number;
 	isEffectFirst: boolean;
 	itemCount: number;

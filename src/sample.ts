@@ -1,4 +1,4 @@
-import { WpGallery } from './gutenberg-gallery-to-slider';
+import { GGToSlider } from './gutenberg-gallery-to-slider';
 window.addEventListener('DOMContentLoaded', async () => {
 	const response = await fetch(
 		'https://pixabay.com/api/?key=28916998-477d57555c1b9cf691a3084d9&category=animals&per_page=8'
@@ -19,11 +19,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 		scope: '#scroll',
 		target: 'ul',
 	};
-	new WpGallery(scrollConfig);
+	new GGToSlider(scrollConfig);
 	const fadeConfig = {
 		scope: '#fade',
 		target: 'ul',
 		effect: 'fade',
 	};
-	new WpGallery(fadeConfig);
+	new GGToSlider(fadeConfig);
 });
