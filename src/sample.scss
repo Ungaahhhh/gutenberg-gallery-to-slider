@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.sample {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	> li {
+		margin: 0;
+		padding: 0;
+
+		img {
+			height: 300px;
+			object-fit: cover;
+		}
+	}
+}
