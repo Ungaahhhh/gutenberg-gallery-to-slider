@@ -14,10 +14,10 @@ export class GGToSlider {
 						const inner = this.getSelector(this.storage.gallery[i], '.GGToSlider_inner');
 						targetItem.classList.add('GGToSlider_target');
 						this.storage.itemCount = targetItem.childElementCount;
-						if (this.config.thumb === 'dot') {
+						if (this.config.control.thumb === 'dot') {
 							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
-							if (this.config.thumb) ggToSliderThumb.classList.add(this.config.thumb);
+							ggToSliderThumb.classList.add(this.config.control.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
 								const image = targetItem.children[j];
 								image.classList.add('GGToSlider_target_item');
@@ -25,16 +25,16 @@ export class GGToSlider {
 								const ggToSliderThumbItem = this.getSelector(ggToSliderThumbItemTemp, '.GGToSlider_thumb_item');
 								ggToSliderThumb.appendChild(ggToSliderThumbItem);
 								ggToSliderThumbItem.addEventListener('click', (e) => {
-									ggToSliderThumb.classList.add('active');
+									ggToSliderThumb.classList.add('disabled');
 									this.setIndex(i, j, 'order');
 								});
 							}
 							inner.appendChild(ggToSliderThumb);
 							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
-						} else {
+						} else if (this.config.control.thumb === 'image') {
 							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
-							if (this.config.thumb) ggToSliderThumb.classList.add(this.config.thumb);
+							ggToSliderThumb.classList.add(this.config.control.thumb);
 							for (let j = 0; j < this.storage.itemCount; j++) {
 								const image = targetItem.children[j];
 								image.classList.add('GGToSlider_target_item');
@@ -46,26 +46,28 @@ export class GGToSlider {
 								ggToSliderThumbItem.appendChild(img);
 								ggToSliderThumb.appendChild(ggToSliderThumbItem);
 								ggToSliderThumbItem.addEventListener('click', (e) => {
-									ggToSliderThumb.classList.add('active');
+									ggToSliderThumb.classList.add('disabled');
 									this.setIndex(i, j, 'order');
 								});
 							}
-							const ggToSliderControlTemp = this.getTemp(this.storage.temp, 'GGToSlider_control_temp');
-							const prev = this.getSelector(ggToSliderControlTemp, '.prev');
-							const next = this.getSelector(ggToSliderControlTemp, '.next');
-							prev.dataset.targetIndex = String(i);
-							next.dataset.targetIndex = String(i);
-							prev.addEventListener('click', (e) => {
-								prev.classList.add('active');
-								this.setIndex(i, -1);
-							});
-							next.addEventListener('click', (e) => {
-								next.classList.add('active');
-								this.setIndex(i, 1);
-							});
 							this.storage.gallery[i].appendChild(ggToSliderThumb);
-							inner.appendChild(ggToSliderControlTemp);
 							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
+							if (this.config.control.adjacent === true) {
+								const ggToSliderControlTemp = this.getTemp(this.storage.temp, 'GGToSlider_control_temp');
+								const prev = this.getSelector(ggToSliderControlTemp, '.prev');
+								const next = this.getSelector(ggToSliderControlTemp, '.next');
+								prev.dataset.targetIndex = String(i);
+								next.dataset.targetIndex = String(i);
+								prev.addEventListener('click', (e) => {
+									prev.classList.add('disabled');
+									this.setIndex(i, -1);
+								});
+								next.addEventListener('click', (e) => {
+									next.classList.add('disabled');
+									this.setIndex(i, 1);
+								});
+								inner.appendChild(ggToSliderControlTemp);
+							}
 						}
 						if (this.config.effect === 'fade') {
 							for (let j = 0; j < this.storage.itemCount; j++) {
@@ -81,36 +83,39 @@ export class GGToSlider {
 										target.classList.remove('fadeIn');
 										target.classList.add('current');
 									}
-									const prev = this.getSelector(inner, '.prev');
-									const next = this.getSelector(inner, '.next');
-									if (prev) prev.classList.remove('active');
-									if (next) next.classList.remove('active');
-									const ggToSliderThumb = this.getSelector(inner, '.GGToSlider_thumb');
-									if (ggToSliderThumb) ggToSliderThumb.classList.remove('active');
+									if (this.config.control.adjacent === true) {
+										const prev = this.getSelector(inner, '.prev');
+										const next = this.getSelector(inner, '.next');
+										prev.classList.remove('disabled');
+										next.classList.remove('disabled');
+									}
+									const ggToSliderThumb = this.getSelector(this.storage.gallery[i], '.GGToSlider_thumb');
+									ggToSliderThumb.classList.remove('disabled');
 								});
 							}
 						}
 						this.setIndex(i, 0, 'order');
-						if (this.config.interval) {
+						this.setInterval();
+						this.storage.gallery[i].addEventListener('mouseenter', () => {
+							this.abortInterval();
+						});
+						this.storage.gallery[i].addEventListener('mouseleave', () => {
 							this.setInterval();
-							this.storage.gallery[i].addEventListener('mouseenter', () => {
-								this.abortInterval();
-							});
-							this.storage.gallery[i].addEventListener('mouseleave', () => {
-								this.setInterval();
-							});
-						}
+						});
 					}
 				}
 			}
 		}
 	}
 	config: config = {
+		control: {
+			adjacent: true,
+			thumb: 'image',
+		},
 		effect: 'slider',
 		interval: 0,
 		scope: '',
 		target: '',
-		thumb: 'image',
 	};
 	storage: storage = {
 		current: 0,
@@ -172,38 +177,34 @@ export class GGToSlider {
 			switch (this.config.effect) {
 				case 'fade':
 					if (!this.storage.isEffectFirst) {
-						if (this.storage.target) {
-							targetItem.children[last].classList.remove('fadeIn');
-							targetItem.children[last].classList.add('fadeOut');
-							targetItem.children[this.storage.current].classList.remove('fadeOut');
-							targetItem.children[this.storage.current].classList.add('fadeIn');
-						}
+						targetItem.children[last].classList.remove('fadeIn');
+						targetItem.children[last].classList.add('fadeOut');
+						targetItem.children[this.storage.current].classList.remove('fadeOut');
+						targetItem.children[this.storage.current].classList.add('fadeIn');
 					}
 					this.storage.isEffectFirst = false;
 					break;
-				default:
-					if (this.storage.target) {
-						targetItem.scrollLeft = targetItem.offsetWidth * this.storage.current;
-						setTimeout(() => {
+				case 'slider':
+					targetItem.scrollLeft = targetItem.offsetWidth * this.storage.current;
+					setTimeout(() => {
+						if (this.config.control.adjacent === true) {
 							const prev = this.getSelector(galleryItem, '.prev');
 							const next = this.getSelector(galleryItem, '.next');
-							if (prev) prev.classList.remove('active');
-							if (next) next.classList.remove('active');
-							const ggToSliderThumb = this.getSelector(galleryItem, '.GGToSlider_thumb');
-							if (ggToSliderThumb) ggToSliderThumb.classList.remove('active');
-						}, 400);
-					}
+							prev.classList.remove('disabled');
+							next.classList.remove('disabled');
+						}
+						const ggToSliderThumb = this.getSelector(galleryItem, '.GGToSlider_thumb');
+						if (ggToSliderThumb) ggToSliderThumb.classList.remove('disabled');
+					}, 400);
 					break;
 			}
-			if (this.config.thumb) {
-				if (this.storage.thumbItem) {
-					for (let i = 0; i < this.storage.thumbItem.length; i++) {
-						const prev = this.storage.thumbItem.item(i);
-						if (prev) prev.classList.remove('active');
-					}
-					const next = this.storage.thumbItem.item(this.storage.current);
-					if (next) next.classList.add('active');
+			if (this.storage.thumbItem) {
+				for (let i = 0; i < this.storage.thumbItem.length; i++) {
+					const prev = this.storage.thumbItem.item(i);
+					if (prev) prev.classList.remove('active');
 				}
+				const next = this.storage.thumbItem.item(this.storage.current);
+				if (next) next.classList.add('active');
 			}
 		}
 	};
@@ -222,11 +223,14 @@ export class GGToSlider {
 }
 
 type config = {
+	control: {
+		adjacent: true;
+		thumb: 'dot' | 'image';
+	};
 	effect: 'fade' | 'slider';
 	interval: number;
 	scope: string;
 	target: string;
-	thumb: 'dot' | 'image';
 };
 
 type storage = {

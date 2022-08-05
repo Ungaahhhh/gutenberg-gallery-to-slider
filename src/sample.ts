@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		interval: 4000,
 		scope: '#fade',
 		target: 'ul',
-		thumb: 'dot',
+		control: { adjacent: true, thumb: 'image' },
 	};
 	new GGToSlider(fadeConfig);
 });
