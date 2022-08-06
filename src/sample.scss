@@ -12,3 +12,15 @@
 		}
 	}
 }
+
+#gutenbergGalleryToSlider {
+	figure {
+		margin: 0;
+		img {
+			height: 300px;
+		}
+	}
+	figcaption {
+		display: none;
+	}
+}
