@@ -12,7 +12,7 @@ const saveImage = async (url, index) => {
 	await fetch(url).then(async (response) => {
 		const arrayBuffer = await response.arrayBuffer();
 		const buffer = Buffer.from(arrayBuffer);
-		fs.writeFileSync(`./0${index + 1}.jpg`, buffer);
+		fs.writeFileSync(`./src/0${index + 1}.jpg`, buffer);
 	});
 };
 
