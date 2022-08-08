@@ -7,7 +7,7 @@
  - WordPress のソースを編集できる
  - scroll-snap-type 使ってもいい
  - scroll-behavior 使ってもいい
- - <template> 使ってもいい
+ - `<template>` 使ってもいい
  - JS 少し書ける人
  - 横スクロールのバーが出ても気にしない
  - 始めに戻る時スクロールしていい
