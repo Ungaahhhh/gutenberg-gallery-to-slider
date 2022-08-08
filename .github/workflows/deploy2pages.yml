@@ -1,27 +1,33 @@
-name: GitHub Pages
-on: 
-  push: 
+name: deploy
+
+on:
+  push:
     tags:
       - 'v*'
 
-jobs: 
-  deploy: 
-    runs-on: ubuntu-20.04 
-    concurrency: 
-      group: ${{ github.workflow }}-${{ github.ref }} 
-    steps: 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node 
-        uses: actions/setup-node@v3
-        with: 
+      - uses: actions/setup-node@v3
+        with:
           node-version: 16
 
-      - run: npm ci
+      - uses: actions/cache@v3
+        id: node_modules_cache_id
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
+      - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
+        run: npm install
       - run: npm run build
 
-      - name: Deploy 
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        with: 
-          github_token: ${{ secrets.GITHUB_TOKEN }} 
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
