@@ -1,17 +1,18 @@
 # gutenberg-gallery-to-slider
 
-## 向いてる人
+## こんな人にオススメ
 
  - Gutenberg の ギャラリー を スライダーにしたい
  - WordPress のプラグインを使いたくない
- - WordPress のソースを編集できる
+ - WordPress のテーマを編集できる
  - scroll-snap-type 使ってもいい
  - scroll-behavior 使ってもいい
  - `<template>` 使ってもいい
  - JS 少し書ける
+ - 自力で CSS 編集してデザイン変えられる
  - 横スクロールのバーが出ても気にしない
- - 始めに戻る時スクロールしてもいい
- - 自力でデザイン変えられる
+ - スライダーの始めに画像に戻る時スクロールしてもいい
+ - タッチデバイスは（開発中）でもいい
 
 ## 使い方
 
@@ -43,11 +44,17 @@
 </template>
 ```
 
+ - `body`のどこかに
+ - `button`の中身は好きなものを
+
 ### CSS
 
 ```HTML
 <link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
 ```
+
+ - `<head>`のどこかに
+
 
 ### JS
 
@@ -61,3 +68,11 @@ window.addEventListener('DOMContentLoaded', () => {
     new GGToSlider(gutenbergGalleryToSliderConfig);
 });
 ```
+
+ - `type="module"`忘れずに
+ - ファイルを配置して import
+ - 任意のタイミングで
+ - オプション変数つくって
+ - new GGToSlider() すればオッケー
+ - target は複数あってもダイジョウブ
+ - scope と target の DOM構造が一致すれば WordPress のソースじゃなくてもオッケー
