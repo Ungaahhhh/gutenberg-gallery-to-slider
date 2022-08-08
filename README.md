@@ -46,7 +46,7 @@
 ### CSS
 
 ```HTML
-<link rel="stylesheet" href="./gutenberg-gallery-to-slider.scss" />
+<link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
 ```
 
 ### JS
