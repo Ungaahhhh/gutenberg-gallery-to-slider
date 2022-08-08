@@ -1,44 +1,35 @@
-name: deploy
-
-on:
+name: GitHub Pages
+on: 
   push:
     tags:
       - 'v*'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+jobs: 
+  deploy: 
+    runs-on: ubuntu-20.04 
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }} 
+    steps: 
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - uses: actions/cache@v3
-        id: node_modules_cache_id
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
-      - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
-        run: npm install
-      - run: npm run build
-      - name: Artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./dist
 
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+      - name: Setup Node 
+        uses: actions/setup-node@v3
+          with:
+            node-version: 16
+ 
+      - name: Cache dependencies 
+        uses: actions/cache@v3
+        with: 
+          path: ~/.npm 
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
+          restore-keys: | ${{ runner.os }}-node-
+
+      - run: npm ci 
+      - run: npm run build
+
+      - name: Deploy 
+        uses: peaceiris/actions-gh-pages@v3 
+        if: ${{ github.ref == 'refs/heads/main' }} 
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }} 
+          publish_dir: ./dist
