@@ -6,7 +6,16 @@ const getAnimals = async () => {
 	for (let j = 0; j < json.hits.length; j++) {
 		const item = json.hits[j];
 		console.log(item.largeImageURL);
+		await getImage(item.largeImageURL);
 	}
 };
 
-getAnimals();
+const getImage = async (url) => {
+	console.log(url);
+	await fetch(url).then((response) => {
+		console.log(response);
+		fs.writeFileSync(`./0${j}.jpg`, response, 'binary');
+	});
+};
+
+await getAnimals();
