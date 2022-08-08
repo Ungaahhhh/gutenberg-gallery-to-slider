@@ -97,13 +97,15 @@ export class GGToSlider {
 							}
 						}
 						this.setIndex(i, 0, 'order');
-						this.setInterval();
-						this.storage.gallery[i].addEventListener('mouseenter', () => {
-							this.abortInterval();
-						});
-						this.storage.gallery[i].addEventListener('mouseleave', () => {
+						if (this.config.interval > 0) {
 							this.setInterval();
-						});
+							this.storage.gallery[i].addEventListener('mouseenter', () => {
+								this.abortInterval();
+							});
+							this.storage.gallery[i].addEventListener('mouseleave', () => {
+								this.setInterval();
+							});
+						}
 					}
 				}
 			}

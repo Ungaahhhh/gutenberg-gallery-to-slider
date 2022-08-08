@@ -8,6 +8,51 @@
 	</head>
 	<body>
 		<h1>gutenberg-gallery-to-slider の DEMO</h1>
+		<h2>gutenberg-gallery-to-slider</h2>
+		<div id="gutenbergGalleryToSlider">
+			<figure class="wp-container-2 wp-block-gallery-1 wp-block-gallery has-nested-images columns-default is-cropped">
+				<figure class="wp-block-image size-large">
+					<img src="./01.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./02.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./03.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./04.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./05.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./06.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./07.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./08.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+			</figure>
+		</div>
+		<pre>
+			<code>
+				const gutenbergGalleryToSliderConfig = {
+					scope: '#gutenbergGalleryToSlider',
+					target: '.wp-block-gallery',
+				};
+			</code>
+		</pre>
 		<h2>scroll</h2>
 		<div id="scroll">
 			<ul class="sample">
@@ -50,54 +95,6 @@
 					interval: 4000,
 					scope: '#fade',
 					target: 'ul',
-					control: { adjacent: true, thumb: 'image' },
-				};
-			</code>
-		</pre>
-		<h2>gutenberg-gallery-to-slider</h2>
-		<div id="gutenbergGalleryToSlider">
-			<figure class="wp-container-2 wp-block-gallery-1 wp-block-gallery has-nested-images columns-default is-cropped">
-				<figure class="wp-block-image size-large">
-					<img src="./01.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./02.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./03.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./04.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./05.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./06.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./07.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-				<figure class="wp-block-image size-large">
-					<img src="./08.jpg" alt="" />
-					<figcaption></figcaption>
-				</figure>
-			</figure>
-		</div>
-		<pre>
-			<code>
-				const gutenbergGalleryToSliderConfig = {
-					effect: 'fade',
-					interval: 4000,
-					scope: '#gutenbergGalleryToSlider',
-					target: '.wp-block-gallery',
 					control: { adjacent: true, thumb: 'image' },
 				};
 			</code>

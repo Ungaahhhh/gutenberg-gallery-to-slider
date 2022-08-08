@@ -16,11 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 	new GGToSlider(fadeConfig);
 	const gutenbergGalleryToSliderConfig = {
-		effect: 'fade',
-		interval: 4000,
 		scope: '#gutenbergGalleryToSlider',
 		target: '.wp-block-gallery',
-		control: { adjacent: true, thumb: 'image' },
 	};
 	new GGToSlider(gutenbergGalleryToSliderConfig);
 });
