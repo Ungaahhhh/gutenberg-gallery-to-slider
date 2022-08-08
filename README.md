@@ -1,9 +1,23 @@
 # gutenberg-gallery-to-slider
 
+## 向いてる人
+
+ - Gutenberg の ギャラリー を スライダーにしたい
+ - WordPress のプラグインを使いたくない
+ - WordPress のソースを編集できる
+ - scroll-snap-type 使ってもいい
+ - scroll-behavior 使ってもいい
+ - <template> 使ってもいい
+ - JS 少し書ける人
+ - 横スクロールのバーが出ても気にしない
+ - 始めに戻る時スクロールしていい
+ - 自力でデザイン変えられる
+
 ## 使い方
 
+### HTML
+
 ```HTML
-<link rel="stylesheet" href="./gutenberg-gallery-to-slider.scss" />
 <template id="GGToSlider_temp">
     <template id="GGToSlider_thumb_temp">
         <ul class="GGToSlider_thumb"></ul>
@@ -29,14 +43,21 @@
 </template>
 ```
 
+### CSS
+
+```HTML
+<link rel="stylesheet" href="./gutenberg-gallery-to-slider.scss" />
+```
+
+### JS
+
 ```JS
 import { GGToSlider } from './gutenberg-gallery-to-slider';
 window.addEventListener('DOMContentLoaded', () => {
-    const scrollConfig = {
-    interval: 4000,
-    scope: '#scroll',
-    target: 'ul',
-    };
-    new GGToSlider(scrollConfig);
+	const gutenbergGalleryToSliderConfig = {
+		scope: '#gutenbergGalleryToSlider',
+		target: '.wp-block-gallery',
+	};
+    new GGToSlider(gutenbergGalleryToSliderConfig);
 });
 ```
