@@ -1,7 +1,7 @@
 /*! gutenberg-gallery-to-slider | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE */
 
 export class GGToSlider {
-	constructor(config) {
+	constructor(config: config) {
 		this.init(config);
 		if (this.storage.target && this.storage.target.length > 0) {
 			for (let i = 0; i < this.storage.target.length; i++) {
@@ -10,13 +10,14 @@ export class GGToSlider {
 					targetItem.outerHTML = `<div class="GGToSlider"><div class="GGToSlider_inner">${targetItem.outerHTML}</div></div>`;
 					this.init();
 					targetItem = this.storage.target.item(i);
-					this.storage.gallery[i] = this.getSelectorAll(this.storage.scope, '.GGToSlider').item(i);
-					if (targetItem && this.storage.gallery[i]) {
-						this.storage.gallery[i].classList.add(this.config.effect);
+					this.storage.gallery[i] = this.getSelectorAll(this.storage.scope, '.GGToSlider').item(i) as HTMLElement;
+					const gallery = this.storage.gallery[i];
+					if (targetItem && gallery) {
+						if (this.config.effect) gallery.classList.add(this.config.effect);
 						const inner = this.getSelector(this.storage.gallery[i], '.GGToSlider_inner');
 						targetItem.classList.add('GGToSlider_target');
 						this.storage.itemCount = targetItem.childElementCount;
-						if (this.config.control.thumb === 'dot') {
+						if (this.config.control && this.config.control.thumb === 'dot') {
 							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
 							ggToSliderThumb.classList.add(this.config.control.thumb);
@@ -33,7 +34,7 @@ export class GGToSlider {
 							}
 							inner.appendChild(ggToSliderThumb);
 							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
-						} else if (this.config.control.thumb === 'image') {
+						} else if (this.config.control && this.config.control.thumb === 'image') {
 							const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
 							const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
 							ggToSliderThumb.classList.add(this.config.control.thumb);
@@ -52,8 +53,8 @@ export class GGToSlider {
 									this.setIndex(i, j, 'order');
 								});
 							}
-							this.storage.gallery[i].appendChild(ggToSliderThumb);
-							this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
+							gallery.appendChild(ggToSliderThumb);
+							this.storage.thumbItem = this.getSelectorAll(gallery, '.GGToSlider_thumb_item');
 							if (this.config.control.adjacent === true) {
 								const ggToSliderControlTemp = this.getTemp(this.storage.temp, 'GGToSlider_control_temp');
 								const prev = this.getSelector(ggToSliderControlTemp, '.prev');
@@ -85,24 +86,24 @@ export class GGToSlider {
 										target.classList.remove('fadeIn');
 										target.classList.add('current');
 									}
-									if (this.config.control.adjacent === true) {
+									if (this.config.control && this.config.control.adjacent === true) {
 										const prev = this.getSelector(inner, '.prev');
 										const next = this.getSelector(inner, '.next');
 										prev.classList.remove('disabled');
 										next.classList.remove('disabled');
 									}
-									const ggToSliderThumb = this.getSelector(this.storage.gallery[i], '.GGToSlider_thumb');
+									const ggToSliderThumb = this.getSelector(gallery, '.GGToSlider_thumb');
 									ggToSliderThumb.classList.remove('disabled');
 								});
 							}
 						}
 						this.setIndex(i, 0, 'order');
-						if (this.config.interval > 0) {
+						if (this.config.interval && this.config.interval > 0) {
 							this.setInterval();
-							this.storage.gallery[i].addEventListener('mouseenter', () => {
+							gallery.addEventListener('mouseenter', () => {
 								this.abortInterval();
 							});
-							this.storage.gallery[i].addEventListener('mouseleave', () => {
+							gallery.addEventListener('mouseleave', () => {
 								this.setInterval();
 							});
 						}
@@ -132,13 +133,9 @@ export class GGToSlider {
 		temp: null,
 		thumbItem: null,
 	};
-	init = (config?): void => {
+	init = (config?: config): void => {
 		if (config) {
-			for (const key in config) {
-				if (Object.hasOwnProperty.call(config, key)) {
-					this.config[key] = config[key];
-				}
-			}
+			this.config = { ...this.config, ...config };
 		}
 		this.storage.temp = this.getTemp(document, 'GGToSlider_temp');
 		this.storage.scope = this.getSelector(document, this.config.scope);
@@ -199,7 +196,7 @@ export class GGToSlider {
 				case 'slider':
 					targetItem.scrollLeft = targetItem.offsetWidth * this.storage.current;
 					setTimeout(() => {
-						if (this.config.control.adjacent === true) {
+						if (this.config.control && this.config.control.adjacent === true) {
 							const prev = this.getSelector(galleryItem, '.prev');
 							const next = this.getSelector(galleryItem, '.next');
 							prev.classList.remove('disabled');
@@ -234,21 +231,23 @@ export class GGToSlider {
 	};
 }
 
-type config = {
-	control: {
-		adjacent: true;
+export type config = {
+	control?: {
+		adjacent: boolean;
 		thumb: 'dot' | 'image';
 	};
-	effect: 'fade' | 'slider';
-	interval: number;
+	effect?: 'fade' | 'slider';
+	interval?: number;
 	scope: string;
 	target: string;
 };
 
+type configKey = keyof config;
+
 type storage = {
 	current: number;
-	gallery: HTMLElement | null[];
-	interval: number;
+	gallery: HTMLElement[] | null[];
+	interval: any;
 	isEffectFirst: boolean;
 	itemCount: number;
 	scope: HTMLElement | null;

@@ -1,4 +1,4 @@
-import { GGToSlider } from './gutenberg-gallery-to-slider';
+import { GGToSlider } from '../prod/gutenberg-gallery-to-slider';
 
 window.addEventListener('DOMContentLoaded', () => {
 	const scrollConfig = {

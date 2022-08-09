@@ -2,8 +2,30 @@
 <html lang="ja">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="stylesheet" href="./gutenberg-gallery-to-slider.scss" />
-		<link rel="stylesheet" href="./demo.scss" />
+		<link rel="stylesheet" href="../prod/gutenberg-gallery-to-slider.css" />
+		<style>
+			.sample {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.sample > li {
+				margin: 0;
+				padding: 0;
+			}
+			.sample img {
+				height: 300px;
+			}
+			#gutenbergGalleryToSlider figure {
+				margin: 0;
+			}
+			#gutenbergGalleryToSlider img {
+				height: 300px;
+			}
+			#gutenbergGalleryToSlider figcaption {
+				display: none;
+			}
+		</style>
 		<title>gutenberg-gallery-to-slider</title>
 	</head>
 	<body>
@@ -122,6 +144,6 @@
 				</button>
 			</template>
 		</template>
-		<script src="demo.ts" type="module"></script>
+		<script src="./demo.js" type="module"></script>
 	</body>
 </html>
