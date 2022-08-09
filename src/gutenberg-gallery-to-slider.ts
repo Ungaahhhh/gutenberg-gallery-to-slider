@@ -10,8 +10,8 @@ export class GGToSlider {
 					targetItem.outerHTML = `<div class="GGToSlider"><div class="GGToSlider_inner">${targetItem.outerHTML}</div></div>`;
 					this.init();
 					targetItem = this.storage.target.item(i);
-					if (targetItem) {
-						if (this.storage.scope) this.storage.gallery[i] = this.getSelector(this.storage.scope, '.GGToSlider');
+					this.storage.gallery[i] = this.getSelectorAll(this.storage.scope, '.GGToSlider').item(i);
+					if (targetItem && this.storage.gallery[i]) {
 						this.storage.gallery[i].classList.add(this.config.effect);
 						const inner = this.getSelector(this.storage.gallery[i], '.GGToSlider_inner');
 						targetItem.classList.add('GGToSlider_target');
@@ -132,7 +132,7 @@ export class GGToSlider {
 		temp: null,
 		thumbItem: null,
 	};
-	init = (config?) => {
+	init = (config?): void => {
 		if (config) {
 			for (const key in config) {
 				if (Object.hasOwnProperty.call(config, key)) {
@@ -143,6 +143,14 @@ export class GGToSlider {
 		this.storage.temp = this.getTemp(document, 'GGToSlider_temp');
 		this.storage.scope = this.getSelector(document, this.config.scope);
 		this.storage.target = this.getSelectorAll(this.storage.scope, this.config.target);
+		try {
+			if (this.storage.target && this.storage.target.length > 0) {
+			} else {
+				throw new Error();
+			}
+		} catch (error) {
+			console.log(`${this.config.scope} or ${this.config.target} が取得できませんでした。`);
+		}
 	};
 	getTemp = (parent: any, id: string): HTMLElement => {
 		return parent.getElementById(id).content.cloneNode(true) as HTMLElement;
@@ -153,7 +161,7 @@ export class GGToSlider {
 	getSelectorAll = (parent: any, query: string): HTMLCollection => {
 		return parent.querySelectorAll(query);
 	};
-	setIndex = (targetIndex: number, num: number, mode?: 'reverse' | 'order') => {
+	setIndex = (targetIndex: number, num: number, mode?: 'reverse' | 'order'): void => {
 		const last = this.storage.current;
 		if (this.storage.target) {
 			const targetItem = this.storage.target[targetIndex] as HTMLElement;
@@ -212,7 +220,7 @@ export class GGToSlider {
 			}
 		}
 	};
-	setInterval = () => {
+	setInterval = (): void => {
 		this.storage.interval = setInterval(() => {
 			if (this.storage.target && this.storage.target.length > 0) {
 				for (let i = 0; i < this.storage.target.length; i++) {
@@ -221,7 +229,7 @@ export class GGToSlider {
 			}
 		}, this.config.interval);
 	};
-	abortInterval = () => {
+	abortInterval = (): void => {
 		clearInterval(this.storage.interval);
 	};
 }
@@ -239,7 +247,7 @@ type config = {
 
 type storage = {
 	current: number;
-	gallery: HTMLElement[];
+	gallery: HTMLElement | null[];
 	interval: number;
 	isEffectFirst: boolean;
 	itemCount: number;
