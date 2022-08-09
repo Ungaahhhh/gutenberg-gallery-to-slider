@@ -5,8 +5,6 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "ESNext",
-		"outDir": "./prod",
 		"strict": true
-	},
-	"include": ["src"]
+	}
 }
