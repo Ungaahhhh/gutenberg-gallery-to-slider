@@ -5,7 +5,7 @@
 		"parcel": "^2.7.0"
 	},
 	"scripts": {
-		"build": "parcel build index.html --public-url ./"
+		"build": "parcel build index.html --public-url ./ && node -e \"require('fs').copyFileSync('./template.html', './dist/template.html')\""
 	},
 	"browserslist": [
 		"> 1%",
