@@ -13,12 +13,13 @@
  - 横スクロールのバーが出ても気にしない
  - スライダーの始めに画像に戻る時スクロールしてもいい
  - タッチデバイスは（開発中）でもいい
+ - いろいろ寛容な人
 
 ## 使い方
 
 ### HTML
 
-```HTML
+```template.html
 <template id="GGToSlider_temp">
     <template id="GGToSlider_thumb_temp">
         <ul class="GGToSlider_thumb"></ul>
@@ -50,7 +51,13 @@
 ### CSS
 
 ```HTML
-<link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
+<link rel="stylesheet" href="gutenberg-gallery-to-slider.css" />
+```
+
+or
+
+```html
+<link rel="stylesheet" href="gutenberg-gallery-to-slider.min.js" />
 ```
 
  - `<head>`のどこかに
@@ -59,20 +66,36 @@
 ### JS
 
 ```JS
-import { GGToSlider } from './gutenberg-gallery-to-slider';
+import { GGToSlider } from 'gutenberg-gallery-to-slider.js';
 window.addEventListener('DOMContentLoaded', () => {
-	const gutenbergGalleryToSliderConfig = {
-		scope: '#gutenbergGalleryToSlider',
-		target: '.wp-block-gallery',
+	const option = {
+		scope: 'element', // Any element
+        target: '.wp-block-gallery', // From Gutenberg
 	};
-    new GGToSlider(gutenbergGalleryToSliderConfig);
+    new GGToSlider(option);
 });
 ```
 
- - `type="module"`忘れずに
- - ファイルを配置して import
+ - `type="module"`を忘れずに
+ - 任意の場所にファイルを配置して import
  - 任意のタイミングで
  - オプション変数つくって
  - new GGToSlider() すればオッケー
  - target は複数あってもダイジョウブ
  - scope と target の DOM構造が一致すれば WordPress のソースじゃなくてもオッケー
+
+## Option
+
+```typescript
+type option = {
+	control?: {
+		adjacent?: boolean; // 前後 省略可 (true)
+		thumb?: 'dot' | 'image'; // サムネイル 省略可('image')
+	};
+	effect?: 'fade' | 'slider'; // アニメーション効果 省略可('slider')
+	interval?: number; // オートプレイ ミリ秒 省略可(0)
+	scope: string; // CSS Selector 必須
+	target: string; // CSS Selector 必須
+};
+```
+
