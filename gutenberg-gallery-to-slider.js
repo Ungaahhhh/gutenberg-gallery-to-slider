@@ -1,7 +1,7 @@
 /*! gutenberg-gallery-to-slider v0.0.30 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE */
 export class GGToSlider {
-    constructor(config) {
-        this.init(config);
+    constructor(option) {
+        this.init(option);
         if (this.storage.target && this.storage.target.length > 0) {
             for (let i = 0; i < this.storage.target.length; i++) {
                 let targetItem = this.storage.target.item(i);
@@ -12,15 +12,15 @@ export class GGToSlider {
                     this.storage.gallery[i] = this.getSelectorAll(this.storage.scope, '.GGToSlider').item(i);
                     const gallery = this.storage.gallery[i];
                     if (targetItem && gallery) {
-                        if (this.config.effect)
-                            gallery.classList.add(this.config.effect);
+                        if (this.option.effect)
+                            gallery.classList.add(this.option.effect);
                         const inner = this.getSelector(this.storage.gallery[i], '.GGToSlider_inner');
                         targetItem.classList.add('GGToSlider_target');
                         this.storage.itemCount = targetItem.childElementCount;
-                        if (this.config.control && this.config.control.thumb === 'dot') {
+                        if (this.option.control && this.option.control.thumb === 'dot') {
                             const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
                             const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
-                            ggToSliderThumb.classList.add(this.config.control.thumb);
+                            ggToSliderThumb.classList.add(this.option.control.thumb);
                             for (let j = 0; j < this.storage.itemCount; j++) {
                                 const image = targetItem.children[j];
                                 image.classList.add('GGToSlider_target_item');
@@ -35,10 +35,10 @@ export class GGToSlider {
                             inner.appendChild(ggToSliderThumb);
                             this.storage.thumbItem = this.getSelectorAll(this.storage.gallery[i], '.GGToSlider_thumb_item');
                         }
-                        else if (this.config.control && this.config.control.thumb === 'image') {
+                        else if (this.option.control && this.option.control.thumb === 'image') {
                             const ggToSliderThumbTemp = this.getTemp(this.storage.temp, 'GGToSlider_thumb_temp');
                             const ggToSliderThumb = this.getSelector(ggToSliderThumbTemp, '.GGToSlider_thumb');
-                            ggToSliderThumb.classList.add(this.config.control.thumb);
+                            ggToSliderThumb.classList.add(this.option.control.thumb);
                             for (let j = 0; j < this.storage.itemCount; j++) {
                                 const image = targetItem.children[j];
                                 image.classList.add('GGToSlider_target_item');
@@ -56,7 +56,7 @@ export class GGToSlider {
                             }
                             gallery.appendChild(ggToSliderThumb);
                             this.storage.thumbItem = this.getSelectorAll(gallery, '.GGToSlider_thumb_item');
-                            if (this.config.control.adjacent === true) {
+                            if (this.option.control.adjacent === true) {
                                 const ggToSliderControlTemp = this.getTemp(this.storage.temp, 'GGToSlider_control_temp');
                                 const prev = this.getSelector(ggToSliderControlTemp, '.prev');
                                 const next = this.getSelector(ggToSliderControlTemp, '.next');
@@ -73,7 +73,7 @@ export class GGToSlider {
                                 inner.appendChild(ggToSliderControlTemp);
                             }
                         }
-                        if (this.config.effect === 'fade') {
+                        if (this.option.effect === 'fade') {
                             for (let j = 0; j < this.storage.itemCount; j++) {
                                 const element = targetItem.children[j];
                                 if (j === 0) {
@@ -89,7 +89,7 @@ export class GGToSlider {
                                         target.classList.remove('fadeIn');
                                         target.classList.add('current');
                                     }
-                                    if (this.config.control && this.config.control.adjacent === true) {
+                                    if (this.option.control && this.option.control.adjacent === true) {
                                         const prev = this.getSelector(inner, '.prev');
                                         const next = this.getSelector(inner, '.next');
                                         prev.classList.remove('disabled');
@@ -101,7 +101,7 @@ export class GGToSlider {
                             }
                         }
                         this.setIndex(i, 0, 'order');
-                        if (this.config.interval && this.config.interval > 0) {
+                        if (this.option.interval && this.option.interval > 0) {
                             this.setInterval();
                             gallery.addEventListener('mouseenter', () => {
                                 this.abortInterval();
@@ -115,7 +115,7 @@ export class GGToSlider {
             }
         }
     }
-    config = {
+    option = {
         control: {
             adjacent: true,
             thumb: 'image',
@@ -136,13 +136,13 @@ export class GGToSlider {
         temp: null,
         thumbItem: null,
     };
-    init = (config) => {
-        if (config) {
-            this.config = { ...this.config, ...config };
+    init = (option) => {
+        if (option) {
+            this.option = { ...this.option, ...option };
         }
         this.storage.temp = this.getTemp(document, 'GGToSlider_temp');
-        this.storage.scope = this.getSelector(document, this.config.scope);
-        this.storage.target = this.getSelectorAll(this.storage.scope, this.config.target);
+        this.storage.scope = this.getSelector(document, this.option.scope);
+        this.storage.target = this.getSelectorAll(this.storage.scope, this.option.target);
         try {
             if (this.storage.target && this.storage.target.length > 0) {
             }
@@ -151,7 +151,7 @@ export class GGToSlider {
             }
         }
         catch (error) {
-            console.log(`${this.config.scope} or ${this.config.target} が取得できませんでした。`);
+            console.log(`${this.option.scope} or ${this.option.target} が取得できませんでした。`);
         }
     };
     getTemp = (parent, id) => {
@@ -190,7 +190,7 @@ export class GGToSlider {
             else if (this.storage.current < 0) {
                 this.storage.current = this.storage.itemCount - 1;
             }
-            switch (this.config.effect) {
+            switch (this.option.effect) {
                 case 'fade':
                     if (!this.storage.isEffectFirst) {
                         targetItem.children[last].classList.remove('fadeIn');
@@ -203,7 +203,7 @@ export class GGToSlider {
                 case 'slider':
                     targetItem.scrollLeft = targetItem.offsetWidth * this.storage.current;
                     setTimeout(() => {
-                        if (this.config.control && this.config.control.adjacent === true) {
+                        if (this.option.control && this.option.control.adjacent === true) {
                             const prev = this.getSelector(galleryItem, '.prev');
                             const next = this.getSelector(galleryItem, '.next');
                             prev.classList.remove('disabled');
@@ -228,13 +228,13 @@ export class GGToSlider {
         }
     };
     setInterval = () => {
-        this.storage.interval = setInterval(() => {
+        this.storage.interval = window.setInterval(() => {
             if (this.storage.target && this.storage.target.length > 0) {
                 for (let i = 0; i < this.storage.target.length; i++) {
                     this.setIndex(i, 1);
                 }
             }
-        }, this.config.interval);
+        }, this.option.interval);
     };
     abortInterval = () => {
         clearInterval(this.storage.interval);

@@ -4,6 +4,10 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
 		<style>
+			body {
+				width: 75%;
+				margin: 0 auto;
+			}
 			.sample {
 				margin: 0;
 				padding: 0;
@@ -14,16 +18,33 @@
 				padding: 0;
 			}
 			.sample img {
-				height: 300px;
+				height: 25vw;
 			}
 			#gutenbergGalleryToSlider figure {
 				margin: 0;
 			}
-			#gutenbergGalleryToSlider img {
-				height: 300px;
+			#gutenbergGalleryToSlider .wp-block-image img {
+				height: 25vw;
 			}
 			#gutenbergGalleryToSlider figcaption {
 				display: none;
+			}
+			pre {
+				padding: 8px;
+				overflow: auto;
+				line-height: 1.45;
+				background-color: #f6f8fa;
+				border-radius: 5px;
+				word-break: normal;
+			}
+			hr {
+				margin: 48px 0;
+			}
+			h2 {
+				margin-top: 0;
+			}
+			.GGToSlider_thumb_item img {
+				height: 150px;
 			}
 		</style>
 		<title>gutenberg-gallery-to-slider</title>
@@ -67,14 +88,11 @@
 				</figure>
 			</figure>
 		</div>
-		<pre>
-			<code>
-				const gutenbergGalleryToSliderConfig = {
-					scope: '#gutenbergGalleryToSlider',
-					target: '.wp-block-gallery',
-				};
-			</code>
-		</pre>
+		<pre><code>const option = {
+    scope: '#gutenbergGalleryToSlider',
+    target: '.wp-block-gallery',
+};</code></pre>
+		<hr />
 		<h2>scroll</h2>
 		<div id="scroll">
 			<ul class="sample">
@@ -88,15 +106,12 @@
 				<li><img src="./08.jpg" alt="" /></li>
 			</ul>
 		</div>
-		<pre>
-			<code>
-				const scrollConfig = {
-					interval: 4000,
-					scope: '#scroll',
-					target: 'ul',
-				};
-			</code>
-		</pre>
+		<pre><code>const option = {
+    interval: 4000,
+    scope: '#scroll',
+    target: 'ul',
+};</code></pre>
+		<hr />
 		<h2>fade</h2>
 		<div id="fade">
 			<ul class="sample">
@@ -110,17 +125,12 @@
 				<li><img src="./08.jpg" alt="" /></li>
 			</ul>
 		</div>
-		<pre>
-			<code>
-				const fadeConfig = {
-					effect: 'fade',
-					interval: 4000,
-					scope: '#fade',
-					target: 'ul',
-					control: { adjacent: true, thumb: 'image' },
-				};
-			</code>
-		</pre>
+		<pre><code>const option = {
+    control: { thumb: 'dot' },
+    effect: 'fade',
+    scope: '#fade',
+    target: 'ul',
+};</code></pre>
 		<script type="module">
 			import { GGToSlider } from './gutenberg-gallery-to-slider.js';
 			window.addEventListener('DOMContentLoaded', async () => {
@@ -129,25 +139,24 @@
 				const div = document.createElement('div');
 				div.innerHTML = text;
 				document.body.appendChild(div);
-				const scrollConfig = {
+				const gutenbergGalleryToSliderOption = {
+					scope: '#gutenbergGalleryToSlider',
+					target: '.wp-block-gallery',
+				};
+				new GGToSlider(gutenbergGalleryToSliderOption);
+				const scrollOption = {
 					interval: 4000,
 					scope: '#scroll',
 					target: 'ul',
 				};
-				new GGToSlider(scrollConfig);
-				const fadeConfig = {
+				new GGToSlider(scrollOption);
+				const fadeOption = {
+					control: { thumb: 'dot' },
 					effect: 'fade',
-					interval: 4000,
 					scope: '#fade',
 					target: 'ul',
-					control: { adjacent: true, thumb: 'image' },
 				};
-				new GGToSlider(fadeConfig);
-				const gutenbergGalleryToSliderConfig = {
-					scope: '#gutenbergGalleryToSlider',
-					target: '.wp-block-gallery',
-				};
-				new GGToSlider(gutenbergGalleryToSliderConfig);
+				new GGToSlider(fadeOption);
 			});
 		</script>
 	</body>
