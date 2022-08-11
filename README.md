@@ -15,6 +15,10 @@
  - タッチデバイスは（開発中）でもいい
  - いろいろ寛容な人
 
+## DEMO
+
+[https://ungaahhhh.github.io/gutenberg-gallery-to-slider/](https://ungaahhhh.github.io/gutenberg-gallery-to-slider/)
+
 ## 使い方
 
 ### HTML
