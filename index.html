@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="./gutenberg-gallery-to-slider.css" />
+		<style>
+			body {
+				width: 75%;
+				margin: 0 auto;
+			}
+			.sample {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.sample > li {
+				margin: 0;
+				padding: 0;
+			}
+			.sample img {
+				height: 25vw;
+			}
+			#gutenbergGalleryToSlider figure {
+				margin: 0;
+			}
+			#gutenbergGalleryToSlider .wp-block-image img {
+				height: 25vw;
+			}
+			#gutenbergGalleryToSlider figcaption {
+				display: none;
+			}
+			pre {
+				padding: 8px;
+				overflow: auto;
+				line-height: 1.45;
+				background-color: #f6f8fa;
+				border-radius: 5px;
+				word-break: normal;
+			}
+			hr {
+				margin: 48px 0;
+			}
+			h2 {
+				margin-top: 0;
+			}
+			.GGToSlider_thumb_item img {
+				height: 150px;
+			}
+		</style>
+		<title>gutenberg-gallery-to-slider</title>
+	</head>
+	<body>
+		<h1>gutenberg-gallery-to-slider の DEMO</h1>
+		<h2>gutenberg-gallery-to-slider</h2>
+		<div id="gutenbergGalleryToSlider">
+			<figure class="wp-container-2 wp-block-gallery-1 wp-block-gallery has-nested-images columns-default is-cropped">
+				<figure class="wp-block-image size-large">
+					<img src="./01.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./02.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./03.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./04.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./05.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./06.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./07.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+				<figure class="wp-block-image size-large">
+					<img src="./08.jpg" alt="" />
+					<figcaption></figcaption>
+				</figure>
+			</figure>
+		</div>
+		<pre><code>const option = {
+    scope: '#gutenbergGalleryToSlider',
+    target: '.wp-block-gallery',
+};</code></pre>
+		<hr />
+		<h2>scroll</h2>
+		<div id="scroll">
+			<ul class="sample">
+				<li><img src="./01.jpg" alt="" /></li>
+				<li><img src="./02.jpg" alt="" /></li>
+				<li><img src="./03.jpg" alt="" /></li>
+				<li><img src="./04.jpg" alt="" /></li>
+				<li><img src="./05.jpg" alt="" /></li>
+				<li><img src="./06.jpg" alt="" /></li>
+				<li><img src="./07.jpg" alt="" /></li>
+				<li><img src="./08.jpg" alt="" /></li>
+			</ul>
+		</div>
+		<pre><code>const option = {
+    interval: 4000,
+    scope: '#scroll',
+    target: 'ul',
+};</code></pre>
+		<hr />
+		<h2>fade</h2>
+		<div id="fade">
+			<ul class="sample">
+				<li><img src="./01.jpg" alt="" /></li>
+				<li><img src="./02.jpg" alt="" /></li>
+				<li><img src="./03.jpg" alt="" /></li>
+				<li><img src="./04.jpg" alt="" /></li>
+				<li><img src="./05.jpg" alt="" /></li>
+				<li><img src="./06.jpg" alt="" /></li>
+				<li><img src="./07.jpg" alt="" /></li>
+				<li><img src="./08.jpg" alt="" /></li>
+			</ul>
+		</div>
+		<pre><code>const option = {
+    control: { thumb: 'dot' },
+    effect: 'fade',
+    scope: '#fade',
+    target: 'ul',
+};</code></pre>
+		<script type="module">
+			import { GGToSlider } from './gutenberg-gallery-to-slider.js';
+			window.addEventListener('DOMContentLoaded', async () => {
+				const response = await fetch('./template.html');
+				const text = await response.text();
+				const div = document.createElement('div');
+				div.innerHTML = text;
+				document.body.appendChild(div);
+				const gutenbergGalleryToSliderOption = {
+					scope: '#gutenbergGalleryToSlider',
+					target: '.wp-block-gallery',
+				};
+				new GGToSlider(gutenbergGalleryToSliderOption);
+				const scrollOption = {
+					interval: 4000,
+					scope: '#scroll',
+					target: 'ul',
+				};
+				new GGToSlider(scrollOption);
+				const fadeOption = {
+					control: { thumb: 'dot' },
+					effect: 'fade',
+					scope: '#fade',
+					target: 'ul',
+				};
+				new GGToSlider(fadeOption);
+			});
+		</script>
+	</body>
+</html>
