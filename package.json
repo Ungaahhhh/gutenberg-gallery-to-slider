@@ -2,10 +2,11 @@
 	"devDependencies": {
 		"@parcel/transformer-sass": "^2.7.0",
 		"@types/node": "^18.6.5",
-		"parcel": "^2.7.0"
+		"parcel": "^2.7.0",
+		"terser": "^5.14.2"
 	},
 	"scripts": {
-		"build": "parcel build index.html --public-url ./ && node -e \"require('fs').copyFileSync('./template.html', './dist/template.html')\""
+		"build": "parcel build index.html --public-url ./ && node -e \"require('fs').copyFileSync('./template.html', './dist/template.html')\" && terser gutenberg-gallery-to-slider.js -o gutenberg-gallery-to-slider.min.js --compress"
 	},
 	"browserslist": [
 		"> 1%",
