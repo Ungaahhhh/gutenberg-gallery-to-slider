@@ -26,7 +26,7 @@ jobs:
         run: npm install
       - run: node ./preparation.js
       - run: npm run build
-      - run: grep -l 'GTAG_ID' './dist/index.html' | xargs sed -i -e "s/GTAG_ID/${{ secrets.GTAG }}/g"
+      - run: grep -l 'GTAG_ID' './dist/index.html' | xargs sed -i -e "s/GTAG_ID/${{ secrets.GTAG_ID }}/g"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
