@@ -18,7 +18,6 @@ jobs:
         id: node_modules_cache_id
         env:
           cache-name: cache-node-modules
-          GTAG: ${{ secrets.GTAG }}
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
@@ -27,7 +26,7 @@ jobs:
         run: npm install
       - run: node ./preparation.js
       - run: npm run build
-      - run: grep -l 'GTAG_ID' './dist/index.html' | xargs sed -i -e 's/GTAG_ID/$GTAG/g'
+      - run: grep -l 'GTAG_ID' './dist/index.html' | xargs sed -i -e "s/GTAG_ID/${{ secrets.GTAG }}/g"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
