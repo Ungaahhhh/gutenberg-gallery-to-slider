@@ -105,4 +105,4 @@ type option = {
 
 ------
 
-gutenberg-gallery-to-slider v0.1.1 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE
+gutenberg-gallery-to-slider v0.1.2 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE
