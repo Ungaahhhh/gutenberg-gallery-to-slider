@@ -1,4 +1,4 @@
-/*! gutenberg-gallery-to-slider v0.1.7 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE */
+/*! gutenberg-gallery-to-slider v0.1.8 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE */
 
 export class GGToSlider {
 	constructor(option: option) {
