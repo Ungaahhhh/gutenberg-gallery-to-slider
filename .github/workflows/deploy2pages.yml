@@ -23,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
       - run: echo '${{ hashFiles('**/package-lock.json') }}'
-      - run: echo steps.node_modules_cache_id.outputs.cache-hit
+      - run: echo '${{steps.node_modules_cache_id.outputs.cache-hit }}'
       - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
         run: npm install
       - run: node ./preparation.js
