@@ -104,9 +104,9 @@ type option = {
 ```
 
 [](
-npm run age -age='v0.1.14'
+npm run age -age='v0.1.15'
 )
 
 ------
 
-gutenberg-gallery-to-slider v0.1.14 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE
+gutenberg-gallery-to-slider v0.1.15 | Ungaahhhh | https://github.com/Ungaahhhh/gutenberg-gallery-to-slider/blob/main/LICENSE
