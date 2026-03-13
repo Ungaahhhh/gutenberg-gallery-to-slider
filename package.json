@@ -1,24 +1,24 @@
 {
-	"devDependencies": {
-		"@parcel/transformer-sass": "^2.16.3",
-		"@types/node": "^25.0.3",
-		"parcel": "^2.16.3",
-		"terser": "^5.44.1"
-	},
-	"scripts": {
-		"build": "parcel build index.html --public-url ./ && node -e \"require('fs').copyFileSync('./template.html', './dist/template.html')\"",
-		"age": "terser gutenberg-gallery-to-slider.js -o gutenberg-gallery-to-slider.min.js --compress && grep -l -E 'v[0-9]+\\.[0-9]+\\.[0-9]+' ./* --include='*.html' --include='*.css' --include='*.scss' --include='*.js' --include='*.ts' --include='README.md' -s | xargs sed -i -E -e \"s/v[0-9]+\\.[0-9]+\\.[0-9]+/${npm_config_age}/g\" && git add . && git commit -m 'age' && git tag ${npm_config_age}"
-	},
-	"browserslist": [
-		"> 1%",
-		"last 2 versions",
-		"not dead"
-	],
-	"dependencies": {
-		"ts-node": "^10.9.2",
-		"typescript": "^5.9.3"
-	},
-	"volta": {
-		"node": "24.12.0"
-	}
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.3",
+    "@types/node": "^25.0.3",
+    "parcel": "^2.16.3",
+    "terser": "^5.44.1"
+  },
+  "scripts": {
+    "build": "parcel build index.html --public-url ./ && node -e \"require('fs').copyFileSync('./template.html', './dist/template.html')\"",
+    "age": "terser gutenberg-gallery-to-slider.js -o gutenberg-gallery-to-slider.min.js --compress && node age.js"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "volta": {
+    "node": "24.12.0"
+  }
 }
